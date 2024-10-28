@@ -44,20 +44,20 @@ define( 'LICENSE_MANAGER_PLUGIN_VERSION',get_plugin_data(__FILE__ )['Version'] )
  * @return void
  */
 function enqueue_core_scripts_and_styles() {
-	wp_enqueue_style( 
-		'license-manager', 
-		trailingslashit( plugins_url('assets', __FILE__) ) . 'css/license-manager.css', 
-		array(), 
-		LICENSE_MANAGER_PLUGIN_VERSION, 
-		'all' 
-	);
+	// wp_enqueue_style( 
+	// 	'license-manager', 
+	// 	trailingslashit( plugins_url('assets', __FILE__) ) . 'css/license-manager.css', 
+	// 	array(), 
+	// 	LICENSE_MANAGER_PLUGIN_VERSION, 
+	// 	'all' 
+	// );
 	// wp_enqueue_script( 
 	// 	'license-manager', 
 	// 	trailingslashit( plugins_url('assets', __FILE__) ) . 'js/license-manager.js' 
 	// );
 
 }
-add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_core_scripts_and_styles' );
+// add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_core_scripts_and_styles' );
 
 
 /**
@@ -69,7 +69,7 @@ function include_license_manager_inc_files() {
 	$files = [
 		'includes/',
 		'lib/functions/',
-		'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
+		// 'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
 	];
 
 	foreach ( $files as $include ) {
@@ -78,11 +78,11 @@ function include_license_manager_inc_files() {
 		if ( is_dir( $include ) ) {
 			foreach ( glob( $include . '*.php' ) as $file ) {
 				require $file;  // all php files from directory
-				// error_log( '$file ' . var_export( $file, true ) );
+				error_log( '$file ' . var_export( $file, true ) );
 			}
 		} else {
 			require $include;    // single php file
-			// error_log( '$include ' . var_export( $include, true ) );
+			error_log( '$include ' . var_export( $include, true ) );
 		}
 	}
 }
