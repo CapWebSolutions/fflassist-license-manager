@@ -87,4 +87,3 @@ function include_license_manager_inc_files() {
 	}
 }
 include_license_manager_inc_files();
-
