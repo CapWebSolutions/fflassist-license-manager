@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-11-19
+
+### Added
+
+- Create plugin settings page for import management
+- License validation for Gravity Forms form ID 1
+- Reformatting license code from entered values to accept 'dashed' or 'not dashed'
+
+### Remove
+
+- Original generic settings page creation
+
 ## [1.0.0] - 2024-10-28
 
 ### Added

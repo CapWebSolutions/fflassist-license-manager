@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist License Manager
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
  * Description: This contains FFL License Manager functionality for FFLAssist. It should remain activated.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
@@ -31,34 +31,6 @@ define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location 
 define( 'LICENSE_MANAGER_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'LICENSE_MANAGER_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
 define( 'LICENSE_MANAGER_PLUGIN_VERSION',get_plugin_data(__FILE__ )['Version'] ); 
-
-/**
- * Enqueue Needed Scripts & styles
- * @since 1.0.0
- *
- * Enqueue scripts and styles needed by core functionality.
- *
- * @author Matt Ryan
- *
- * @param void
- * @return void
- */
-function enqueue_core_scripts_and_styles() {
-	// wp_enqueue_style( 
-	// 	'license-manager', 
-	// 	trailingslashit( plugins_url('assets', __FILE__) ) . 'css/license-manager.css', 
-	// 	array(), 
-	// 	LICENSE_MANAGER_PLUGIN_VERSION, 
-	// 	'all' 
-	// );
-	// wp_enqueue_script( 
-	// 	'license-manager', 
-	// 	trailingslashit( plugins_url('assets', __FILE__) ) . 'js/license-manager.js' 
-	// );
-
-}
-// add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_core_scripts_and_styles' );
-
 
 /**
  * Get all the include files for the theme.
