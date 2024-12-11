@@ -24,9 +24,9 @@ function is_ffl_code_valid( $license ) {
     }
 
     // Prepare the SQL statement
-    $query = $wpdb->prepare("SELECT _ffl_license_number, _ffl_license_name, _ffl_business_name FROM wp_licensees3 WHERE _ffl_license_number = %s", $formatted_license);
+    $license_db = $wpdb->prefix . 'ffl_licensees';
+    $query = $wpdb->prepare("SELECT _ffl_license_number, _ffl_license_name, _ffl_business_name FROM %i WHERE _ffl_license_number = %s", $license_db, $formatted_license);
 
-    error_log( '$query' . var_export( $query, true ) );
     // Execute the query
     $result = $wpdb->get_row($query, ARRAY_A);
     // Check if a result was found
@@ -45,7 +45,7 @@ function reformat_ffl_code($license) {
 
     // Remove any non-alphanumeric characters
     $license = preg_replace('/[^a-zA-Z0-9]/', '', $license);
-    error_log( '$license ' . var_export( $license, true ) );
+    // error_log( '$license ' . var_export( $license, true ) );
     // Check the length of the license code
     $length = strlen($license);
     if ($length > 20 || $length < 15) {
@@ -59,17 +59,6 @@ function reformat_ffl_code($license) {
                          substr($license, 6, 2) . '-' .
                          substr($license, 8, 2) . '-' .
                          substr($license, 10);
-                         error_log( print_r( (object)
-                            [
-                                'file' => __FILE__,
-                                'method' => __METHOD__,
-                                'line' => __LINE__,
-                                'dump' => [
-                                    $formatted_license,
-                                ],
-                            ], true ) );
-
-    error_log( '$formatted_license ' . var_export( $formatted_license, true ) );
 
     return $formatted_license;
 }

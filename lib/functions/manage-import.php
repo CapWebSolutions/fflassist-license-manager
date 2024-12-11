@@ -44,7 +44,7 @@ function delete_import_file( $import_id ) {
 		}
 	}
 }
-add_action( 'pmxi_after_xml_import', __NAMESPACE__ . '\delete_import_file', 10, 1 );
+// add_action( 'pmxi_after_xml_import', __NAMESPACE__ . '\delete_import_file', 10, 1 );
 
 function wpai_send_email($import_id) {
     // Only send emails for import ID 2.
@@ -82,7 +82,7 @@ function wpai_send_email($import_id) {
     // Send via WordPress email.
     wp_mail( $to, $subject, $body, $headers );
 }
-add_action('pmxi_after_xml_import', __NAMESPACE__ . '\wpai_send_email', 10, 1);
+// add_action('pmxi_after_xml_import', __NAMESPACE__ . '\wpai_send_email', 10, 1);
 
 /**
  * Create License Settings Page

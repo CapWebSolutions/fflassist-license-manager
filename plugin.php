@@ -30,7 +30,7 @@ define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location 
 define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 define( 'LICENSE_MANAGER_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'LICENSE_MANAGER_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
-define( 'LICENSE_MANAGER_PLUGIN_VERSION',get_plugin_data(__FILE__ )['Version'] ); 
+define( 'LICENSE_MANAGER_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
 
 /**
  * Get all the include files for the theme.
@@ -50,11 +50,9 @@ function include_license_manager_inc_files() {
 		if ( is_dir( $include ) ) {
 			foreach ( glob( $include . '*.php' ) as $file ) {
 				require $file;  // all php files from directory
-				error_log( '$file ' . var_export( $file, true ) );
 			}
 		} else {
 			require $include;    // single php file
-			error_log( '$include ' . var_export( $include, true ) );
 		}
 	}
 }

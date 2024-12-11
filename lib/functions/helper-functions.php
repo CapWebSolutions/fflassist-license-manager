@@ -28,7 +28,7 @@ function validate_code($validation_result){
         // field 8 is the field we are validating  
             if($field['id'] == 8){
                 $field['failed_validation'] = true;
-                $field['validation_message'] = 'The license number you entered is not found. Please try again.';
+                $field['validation_message'] = 'The license number you entered is not found. Please re-enter it.';
                 break;
             }
         }
