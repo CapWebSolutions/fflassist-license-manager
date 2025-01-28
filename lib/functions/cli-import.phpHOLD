@@ -1,0 +1,113 @@
+<?php
+
+if (defined('WP_CLI') && WP_CLI) {
+    /**
+     * Import data from a CSV file into a custom database table.
+     * 
+     * ## OPTIONS
+     * 
+     * --file <file.csv> 
+     *   : The name of the csv FFL Licenses file to be imported 
+     * 
+     * --log-file
+     *    : If present, a duration time will be displayed at the end of processing. 
+     * 
+     * ## EXAMPLES
+     * 
+     *      wp import_ffl_licensees --file 0924-ffl-list-complete.csv --log-file
+     *
+     * @when after_wp_load
+     */
+    function import_ffl_licensees($args, $assoc_args) {
+        global $wpdb;
+
+        // Check if the "file" parameter is provided
+        // https://make.wordpress.org/cli/handbook/guides/commands-cookbook/#accepting-arguments
+
+        if ( empty( $assoc_args['file'] ) ) {
+            WP_CLI::error("Please provide a CSV file using the '--file' parameter.");
+            exit;
+        }
+
+        $file_path = $args[0];
+
+        // Check if the file exists
+        if (!file_exists( $file_path )) {
+            WP_CLI::error("The file '{$file_path}' does not exist.");
+            exit;
+        }
+
+        // Define the table name with the prefix
+        $table_name = $wpdb->prefix . 'ffl_licensees';
+
+        // Drop the table if it already exists
+        $wpdb->query("DROP TABLE IF EXISTS $table_name");
+
+        // Create the table
+        $charset_collate = $wpdb->get_charset_collate();
+        $sql = "CREATE TABLE $table_name (
+            id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            license CHAR(20) NOT NULL,
+            license_name CHAR(48) NOT NULL,
+            business_name CHAR(48) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
+
+        // Log start time if --log-time is provided 
+        $log_time = !empty( $assoc_args['log-time'] ); 
+        if ( $log_time ) { 
+            $start_time = microtime(true); 
+        }
+
+        // Open the CSV file
+        $handle = fopen($file_path, 'r');
+        if (!$handle) {
+            WP_CLI::error("Failed to open the file '{$file_path}'.");
+            exit;
+        }
+
+        $row_count = 0;
+        // while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+        // Skip the 1st reecord. 
+        $trash_first = fgetcsv($handle, length: null, separator: ",", enclosure: "\"", escape: "\\" );
+        while (($data = fgetcsv($handle, length: null, separator: ",", enclosure: "\"", escape: "\\" ) ) !== false) {
+            // Skip empty rows. Process only the first 8 columns
+            if (count($data) < 8 ) continue;
+
+            // Concatenate the first 5 columns with a "-" separator
+            $license = sanitize_text_field( substr(implode('-', array_slice($data, 0, 6)), 0, 20) );
+
+            // Read columns 6 and 7
+            $license_name = sanitize_text_field($data[6]);
+            $business_name = sanitize_text_field($data[7]);
+
+            // Insert the data into the database table
+            $wpdb->insert($table_name, [
+                'license' => $license,
+                'license_name' => $license_name,
+                'business_name' => $business_name,
+            ]);
+
+            $row_count++;
+            if ($row_count % 1000 == 0) {
+                WP_CLI::log("Processed {$row_count} records...");
+            }
+        }
+
+        fclose($handle);
+        // Log end time and output duration if --log-time is provided 
+        if ( $log_time ) { 
+            $end_time = microtime(true); 
+            $duration = $end_time - $start_time; 
+            $short_dur = round( $duration, 2 );
+            WP_CLI::log("Import completed in {$short_dur} seconds."); 
+        } 
+
+        WP_CLI::success("Finished processing {$row_count} records.");
+    }
+
+    // Register the WP-CLI command
+    WP_CLI::add_command('import_ffl_licensees', 'import_ffl_licensees');
+}
