@@ -30,7 +30,14 @@ define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location 
 define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 define( 'LICENSE_MANAGER_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
 define( 'LICENSE_MANAGER_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
-define( 'LICENSE_MANAGER_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
+
+add_action( 'after_setup_theme', __NAMESPACE__ . '\core_setup' );
+function core_setup() {
+	if( ! function_exists('get_plugin_data') ){
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+	define( 'LICENSE_MANAGER_PLUGIN_VERSION', get_plugin_data(__FILE__ )['Version'] ); 
+}
 
 /**
  * Get all the include files for the theme.
