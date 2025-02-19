@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist License Manager
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
  * Description: This contains FFL License Manager functionality for FFLAssist. It should remain activated.
- * Version: 1.0.2
+ * Version: 1.1.0
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
@@ -17,22 +17,14 @@
  *
  */
 
-namespace capweb\license_manager;
-
-if ( is_admin() ) {
-	if( ! function_exists('get_plugin_data') ){
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	}
-}
+// namespace capweb;
 
 // Define needed constants
-define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
-define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
-define( 'LICENSE_MANAGER_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
-define( 'LICENSE_MANAGER_THEME_URI', get_stylesheet_directory_uri() );   // Used in checking location of logo file
+// define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
+// define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
 
-add_action( 'after_setup_theme', __NAMESPACE__ . '\core_setup' );
-function core_setup() {
+add_action( 'after_setup_theme','_license_manager_core_setup' );
+function _license_manager_core_setup() {
 	if( ! function_exists('get_plugin_data') ){
 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	}
@@ -50,9 +42,10 @@ function include_license_manager_inc_files() {
 		'lib/functions/',
 		// 'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
 	];
+	require_once dirname( __FILE__) . '/includes/class-tgm-plugin-activation.php';
 
 	foreach ( $files as $include ) {
-		$include = trailingslashit( LICENSE_MANAGER_PLUGIN_DIR ) . $include;
+		$include = dirname( __FILE__) . '/' . $include;
 		// Allows inclusion of individual files or all .php files in a directory.
 		if ( is_dir( $include ) ) {
 			foreach ( glob( $include . '*.php' ) as $file ) {

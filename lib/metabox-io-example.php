@@ -35,9 +35,9 @@ namespace capweb\license_manager;
  */
 // require_once dirname( __FILE__ ) . '/class-tgm-plugin-activation.php';
 
-require LICENSE_MANAGER_PLUGIN_DIR . 'includes/class-tgm-plugin-activation.php';
+require_once dirname( __FILE__) . '/includes/class-tgm-plugin-activation.php';
 
-add_action( 'tgmpa_register',  __NAMESPACE__ . '\register_required_plugins' );
+add_action( 'tgmpa_register', 'register_required_plugins' );
 
 /**
  * Register the required plugins for this theme.

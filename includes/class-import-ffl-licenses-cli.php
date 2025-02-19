@@ -1,26 +1,24 @@
 <?php
+/**
+ * Import data from a CSV file into a custom database table.
+ * 
+ * ## OPTIONS
+ * 
+ * --file <file.csv> 
+ *   : The name of the csv FFL Licenses file to be imported. Use URL from media library.  
+ * 
+ * --log
+ *    : If present, a duration time will be displayed at the end of processing. 
+ * 
+ * ## EXAMPLES
+ * 
+ *      wp import_ffl_data --file 0924-ffl-list-complete.csv --log-file
+ *
+ * @when after_wp_load
+ */
+class Import_Ffl_Data {
 
-class Import_Ffl_Licenses {
-// if (defined('WP_CLI') && WP_CLI) {
-    /**
-     * Import data from a CSV file into a custom database table.
-     * 
-     * ## OPTIONS
-     * 
-     * --file <file.csv> 
-     *   : The name of the csv FFL Licenses file to be imported. Use URL from media library.  
-     * 
-     * --log
-     *    : If present, a duration time will be displayed at the end of processing. 
-     * 
-     * ## EXAMPLES
-     * 
-     *      wp import_ffl_licensees --file 0924-ffl-list-complete.csv --log-file
-     *
-     * @when after_wp_load
-     */
-    // public function import_ffl_licensees($args, $assoc_args) {
-    public function __invoke($args, $assoc_args) {
+     public function __invoke($args, $assoc_args) {
             global $wpdb;
 
         // Check if the "file" parameter is provided
@@ -140,7 +138,7 @@ class Import_Ffl_Licenses {
 
 }
 
-// If CLI is intalled register the new WP-CLI command
+// If CLI is installed register the new WP-CLI command
 if (defined('WP_CLI') && WP_CLI) {
-    WP_CLI::add_command('import_ffl_licensees', 'Import_Ffl_Licenses');
+    WP_CLI::add_command('import_ffl_data', 'Import_Ffl_Data');
 }

@@ -10,7 +10,7 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb\license_manager;
+// namespace capweb;
 
 // Assumes that $license has been syntax checked and is formatted as x-xx-xxx-xx-xx-xxxx.
 function is_ffl_code_valid( $license ) {

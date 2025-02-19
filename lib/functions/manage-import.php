@@ -11,10 +11,10 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace capweb\license_manager;
+// namespace capweb;
 
 /**
- * Delete Import File
+ * Delete Import File from WP All Import
  *
  * @param [type] $import_id
  * @return void
@@ -44,7 +44,7 @@ function delete_import_file( $import_id ) {
 		}
 	}
 }
-// add_action( 'pmxi_after_xml_import', __NAMESPACE__ . '\delete_import_file', 10, 1 );
+// add_action( 'pmxi_after_xml_import','delete_import_file', 10, 1 );
 
 function wpai_send_email($import_id) {
     // Only send emails for import ID 2.
@@ -82,7 +82,7 @@ function wpai_send_email($import_id) {
     // Send via WordPress email.
     wp_mail( $to, $subject, $body, $headers );
 }
-// add_action('pmxi_after_xml_import', __NAMESPACE__ . '\wpai_send_email', 10, 1);
+// add_action('pmxi_after_xml_import','wpai_send_email', 10, 1);
 
 /**
  * Create License Settings Page
@@ -94,10 +94,11 @@ function create_license_settings_page( $settings_pages ) {
 	$settings_pages[] = [
         'menu_title'      => __( 'FFL License Management', 'fflassist' ),
         'id'              => 'ffl-license-management',
-        'parent'          => 'edit.php?post_type=ffl-licensee',
+        'position'        => 3,
+        'parent'          => 'options-general.php',
+        'columns'         => 1,
         'tabs'            => [
             'Import' => 'Import',
-            'Other'  => 'Other',
         ],
         'customizer'      => false,
         'customizer_only' => false,
@@ -107,7 +108,7 @@ function create_license_settings_page( $settings_pages ) {
 
 	return $settings_pages;
 }
-add_filter( 'mb_settings_pages', __NAMESPACE__ . '\create_license_settings_page' );
+add_filter( 'mb_settings_pages','create_license_settings_page' );
 
 /**
  * Display License Settings
@@ -119,7 +120,7 @@ function display_license_settings( $meta_boxes ) {
     $prefix = '';
 
     $meta_boxes[] = [
-        'title'          => __( 'License Settings Page Fields', 'fflassist' ),
+        'title'          => __( 'FFL License Management', 'fflassist' ),
         'id'             => 'license-settings-page-fields',
         'settings_pages' => ['ffl-license-management'],
         'tab'            => 'Import',
@@ -128,58 +129,77 @@ function display_license_settings( $meta_boxes ) {
                 'name'              => __( 'License Import File', 'fflassist' ),
                 'id'                => $prefix . 'license_import_file',
                 'type'              => 'file_advanced',
-                'label_description' => __( 'This is the label description. ', 'fflassist' ),
-                'desc'              => __( 'CSV file expected. Input Description.', 'fflassist' ),
+                'label_description' => __( 'Select file from media library. ', 'fflassist' ),
+                'desc'              => __( 'CSV file expected. Importing is a destructive process. Existing FFL Licensee records are deleted.', 'fflassist' ),
                 'max_file_uploads'  => 1,
                 'force_delete'      => false,
                 'required'          => true,
                 'clone'             => false,
                 'clone_empty_start' => false,
-                'columns'           => 4,
                 'hide_from_rest'    => false,
                 'hide_from_front'   => false,
             ],
             [
-                'name'              => __( 'Last Imported File', 'fflassist' ),
-                'id'                => $prefix . 'last_imported_file',
-                'type'              => 'text',
+                'name'              => __( 'Record Limit', 'fflassist' ),
+                'id'                => $prefix . 'record_limit',
+                'type'              => 'number',
+                'label_description' => __( '', 'fflassist' ),
+                'desc'              => __( 'Maximum number of records to import. All records will be processed if left blank. ', 'fflassist' ),
                 'required'          => false,
+                'min'               => 0,
                 'disabled'          => false,
-                'readonly'          => true,
+                'readonly'          => false,
                 'clone'             => false,
                 'clone_empty_start' => false,
-                'columns'           => 4,
                 'hide_from_rest'    => false,
                 'hide_from_front'   => false,
-                'limit_type'        => 'character',
             ],
             [
-                'name'              => __( 'Last Import Date', 'fflassist' ),
-                'id'                => $prefix . 'last_import_date',
-                'type'              => 'text',
-                'required'          => false,
-                'disabled'          => false,
-                'readonly'          => true,
-                'clone'             => false,
-                'clone_empty_start' => false,
-                'columns'           => 4,
-                'hide_from_rest'    => false,
-                'hide_from_front'   => false,
-                'limit_type'        => 'character',
-            ],
-            [
-                'name'            => __( 'Run Import Button', 'fflassist' ),
+                'name'            => __( 'Perform License Data Import', 'fflassist' ),
                 'id'              => $prefix . 'run_import_button',
                 'type'            => 'button',
                 'std'             => __( 'Run Import', 'fflassist' ),
+                'attributes' => [
+                    'data-section' => 'advanced-section',
+                    'class'        => 'js-toggle',
+                ],
                 'disabled'        => false,
-                'columns'         => 4,
                 'hide_from_rest'  => false,
                 'hide_from_front' => false,
             ],
         ],
     ];
 
+
     return $meta_boxes;
 }
-add_filter( 'rwmb_meta_boxes', __NAMESPACE__ . '\display_license_settings' );
+add_filter( 'rwmb_meta_boxes','display_license_settings' );
+
+
+// add_action( 'rwmb_enqueue_scripts','_enqueue_custom_script' );
+function _enqueue_custom_script() {
+    wp_enqueue_script( 'script-id', dirname( __FILE__) . '/assets/js/admin.js', [ 'jquery' ], '', true );
+    // wp_localize_script( 'script-id', 'ffl_import_data', [
+    //     'ajax_url' => admin_url( 'admin-ajax.php' ),
+    // ]);
+}
+
+// Add the AJAX action to handle the button click
+// add_action( 'wp_ajax_start_it_up','start_it_up_callback' );
+
+function start_it_up_callback() {
+
+    $license_import_file = isset($_POST[$prefix . 'license_import_file']) ? sanitize_text_field($_POST[$prefix . 'license_import_file']) : '';
+    $record_limit = isset($_POST[$prefix . 'record_limit']) ? intval($_POST[$prefix . 'record_limit']) : 0;
+
+    ?><script>console.log('Importing...');</script><?php
+    $status = start_it_up( $license_import_file, $record_limit );
+    ?><script>console.log('Importing complete.');</script><?php
+    if ( is_null($status) ) {
+        $output = 'Success.';
+    } else {
+        $output = $status;
+    }
+    echo $output;
+    wp_die;
+}
