@@ -9,10 +9,7 @@
  * @link
 */
 
-// namespace capweb;
-
-function start_it_up($input_file, $number_of_records ) {
-    // global $wpdb;
+function capweb_start_it_up($input_file, $number_of_records ) {
 
     $status = NULL;
     $log_time = false;

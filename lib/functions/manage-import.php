@@ -11,7 +11,6 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
 /**
  * Delete Import File from WP All Import
@@ -19,7 +18,7 @@
  * @param [type] $import_id
  * @return void
  */
-function delete_import_file( $import_id ) {
+function capweb_delete_import_file( $import_id ) {
 
     // Retrieve import object.
     $import = new PMXI_Import_Record();
@@ -44,9 +43,9 @@ function delete_import_file( $import_id ) {
 		}
 	}
 }
-// add_action( 'pmxi_after_xml_import','delete_import_file', 10, 1 );
+// add_action( 'pmxi_after_xml_import','capweb_delete_import_file', 10, 1 );
 
-function wpai_send_email($import_id) {
+function capweb_wpai_send_email($import_id) {
     // Only send emails for import ID 2.
     if($import_id != "2")
         return;
@@ -82,7 +81,7 @@ function wpai_send_email($import_id) {
     // Send via WordPress email.
     wp_mail( $to, $subject, $body, $headers );
 }
-// add_action('pmxi_after_xml_import','wpai_send_email', 10, 1);
+// add_action('pmxi_after_xml_import','capweb_wpai_send_email', 10, 1);
 
 /**
  * Create License Settings Page
@@ -90,7 +89,7 @@ function wpai_send_email($import_id) {
  * @param [type] $settings_pages
  * @return void
  */
-function create_license_settings_page( $settings_pages ) {
+function capweb_create_license_settings_page( $settings_pages ) {
 	$settings_pages[] = [
         'menu_title'      => __( 'FFL License Management', 'fflassist' ),
         'id'              => 'ffl-license-management',
@@ -108,7 +107,7 @@ function create_license_settings_page( $settings_pages ) {
 
 	return $settings_pages;
 }
-add_filter( 'mb_settings_pages','create_license_settings_page' );
+add_filter( 'mb_settings_pages','capweb_create_license_settings_page' );
 
 /**
  * Display License Settings
@@ -116,7 +115,7 @@ add_filter( 'mb_settings_pages','create_license_settings_page' );
  * @param [type] $meta_boxes
  * @return void
  */
-function display_license_settings( $meta_boxes ) {
+function capweb_display_license_settings( $meta_boxes ) {
     $prefix = '';
 
     $meta_boxes[] = [
@@ -173,11 +172,11 @@ function display_license_settings( $meta_boxes ) {
 
     return $meta_boxes;
 }
-add_filter( 'rwmb_meta_boxes','display_license_settings' );
+add_filter( 'rwmb_meta_boxes','capweb_display_license_settings' );
 
 
-// add_action( 'rwmb_enqueue_scripts','_enqueue_custom_script' );
-function _enqueue_custom_script() {
+// add_action( 'rwmb_enqueue_scripts','capweb_enqueue_custom_script' );
+function capweb_enqueue_custom_script() {
     wp_enqueue_script( 'script-id', dirname( __FILE__) . '/assets/js/admin.js', [ 'jquery' ], '', true );
     // wp_localize_script( 'script-id', 'ffl_import_data', [
     //     'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -185,15 +184,15 @@ function _enqueue_custom_script() {
 }
 
 // Add the AJAX action to handle the button click
-// add_action( 'wp_ajax_start_it_up','start_it_up_callback' );
+// add_action( 'wp_ajax_capweb_start_it_up','capweb_start_it_up_callback' );
 
-function start_it_up_callback() {
+function capweb_start_it_up_callback() {
 
     $license_import_file = isset($_POST[$prefix . 'license_import_file']) ? sanitize_text_field($_POST[$prefix . 'license_import_file']) : '';
     $record_limit = isset($_POST[$prefix . 'record_limit']) ? intval($_POST[$prefix . 'record_limit']) : 0;
 
     ?><script>console.log('Importing...');</script><?php
-    $status = start_it_up( $license_import_file, $record_limit );
+    $status = capweb_start_it_up( $license_import_file, $record_limit );
     ?><script>console.log('Importing complete.');</script><?php
     if ( is_null($status) ) {
         $output = 'Success.';

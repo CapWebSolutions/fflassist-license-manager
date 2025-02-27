@@ -11,7 +11,7 @@ function runImport() {
         url: ffl_import_data.ajax_url,
         method: 'POST',
         data: {
-            action: 'start_it_up',
+            action: 'capweb_start_it_up',
             filename: filename,
             num_rows: numRows
         },

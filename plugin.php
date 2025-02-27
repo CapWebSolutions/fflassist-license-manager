@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist License Manager
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
  * Description: This contains FFL License Manager functionality for FFLAssist. It should remain activated.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
@@ -16,8 +16,6 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
-
-// namespace capweb;
 
 // Define needed constants
 // define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk

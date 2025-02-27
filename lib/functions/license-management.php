@@ -10,14 +10,13 @@
  * @copyright    Copyright (c) 2024, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-// namespace capweb;
 
 // Assumes that $license has been syntax checked and is formatted as x-xx-xxx-xx-xx-xxxx.
-function is_ffl_code_valid( $license ) {
+function capweb_is_ffl_code_valid( $license ) {
     global $wpdb;
 
     // Check if $license is formatted. If not, format it. 
-    $formatted_license = reformat_ffl_code($license);
+    $formatted_license = capweb_reformat_ffl_code($license);
 
     if ( ! $formatted_license ) {
         return false;
@@ -37,7 +36,7 @@ function is_ffl_code_valid( $license ) {
     }
 }
 
-function reformat_ffl_code($license) {
+function capweb_reformat_ffl_code($license) {
     // Check if the license parameter is empty
     if (empty($license)) {
         return false;
