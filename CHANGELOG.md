@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-03-05
+
+### Changed
+
+- Styling for search results display on settings page. 
+- Adjustments for table formatted output of search results. 
+- Adjust search js to insert results into proper div.
+- Adjust search meta box settings to provide additional direction. 
+
 ## [1.1.2] - 2025-03-04
 
 ### Added
