@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
             return;
         }
 
-        // $('#license-settings-page-search').append('<div class="license-wrap-notice"><p>Working . . .</p></div>');
+        $('#search-results').html('<div class="license-wrap-notice"><p>Working . . .</p></div>');
 
         $.ajax({
             url: search_data.ajax_url,

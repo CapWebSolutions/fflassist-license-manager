@@ -1,14 +1,23 @@
 /**
-        *** CSS needed for functionality plugin
+        *** CSS needed for license manager plugin
 */
-
-
-.search-results {
-    font-weight: 700;
-    text-align: left;
-    color: cyan;
-}
 
 .license-wrap-notice {
     margin-left: 1em;;
+}
+
+#license-settings-page-search {
+    margin: 1em;    
+}
+
+#search-results > .license-wrap {
+    margin-left: 1em;
+}
+
+#search-results > .license-wrap > table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    margin-bottom: 1em;
+    margin-left: 1em;
 }

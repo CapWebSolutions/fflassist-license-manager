@@ -22,8 +22,8 @@ function capweb_display_license_settings_import_mb( $meta_boxes ) {
     $prefix = '';
 
     $meta_boxes[] = [
-        'title'          => __( 'FFL License Management', 'fflassist' ),
-        'id'             => 'license-settings-page-fields',
+        'title'          => __( 'FFL License Management - Import', 'fflassist' ),
+        'id'             => 'license-settings-page-import',
         'settings_pages' => ['ffl-license-management'],
         'tab'            => 'Import',
         'fields'         => [
@@ -125,6 +125,7 @@ function capweb_display_license_settings_search_mb($meta_boxes) {
                 'name'            => __('FFL License Number', 'fflassist'),
                 'id'              => $prefix . 'license_number',
                 'type'            => 'text',
+                'desc' => __( 'Enter license code to search. Dashes not required.', 'fflassist' ),
                 'required'        => true,
                 'placeholder'     => FFL_LICENSE_PLACEHOLDER,
                 'hide_from_rest'  => false,
@@ -145,7 +146,7 @@ function capweb_display_license_settings_search_mb($meta_boxes) {
             ],
             [
                 'type'            => 'custom_html',
-                'std'             => '<div id="search-results"></div>',
+                'std'             => '<div id="search-results">Search Results Displayed Here.</div>',
                 'hide_from_rest'  => false,
                 'hide_from_front' => false,
             ],

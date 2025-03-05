@@ -47,11 +47,22 @@ function capweb_search_license_callback() {
         ?>
         <div class='license-wrap'>
         <h3>License Details</h3>
-        <p>
-            <strong>License Number:&nbsp;</strong><?php echo esc_html($result['_ffl_license_number']); ?><br>
-            <strong>License Name:&nbsp;&nbsp;</strong><?php echo esc_html($result['_ffl_license_name']); ?><br>
-            <strong>Business Name:&nbsp;</strong> <?php echo esc_html($result['_ffl_business_name']); ?>
-        </p>
+        <table>
+            <tbody>
+            <tr>
+                <td><strong>License Number</strong></td>
+                <td><?php echo esc_html($result['_ffl_license_number']); ?></td>
+            </tr>
+            <tr>
+                <td><strong>License Name</strong></td>
+                <td><?php echo esc_html($result['_ffl_license_name']); ?></td>
+            </tr>
+            <tr>
+                <td><strong>Business Name</strong></td>
+                <td><?php echo esc_html($result['_ffl_business_name']); ?></td>
+            </tr>
+            </tbody>
+        </table>
         </div>
         <?php
     } else {
