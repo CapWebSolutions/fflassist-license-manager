@@ -61,3 +61,24 @@ function capweb_reformat_ffl_code($license) {
 
     return $formatted_license;
 }
+
+
+function capweb_perform_license_file_import( $license_import_file, $record_limit ) {
+    // Check if the file exists
+    if (!file_exists($license_import_file)) {
+        return new WP_Error('file_not_found', __('The specified file does not exist.', 'fflassist-license-manager'));
+    }
+
+    // Include the CLI class file
+    require_once plugin_dir_path(__FILE__) . '../includes/class-import-ffl-licenses-cli.php';
+
+    // Create an instance of the CLI class
+    $importer = new Import_Ffl_Data();
+
+    // Call the import method from the CLI class
+    $result = $importer->import_ffl_data($license_import_file, $record_limit);
+
+    // Return the result
+    return $result;
+
+}

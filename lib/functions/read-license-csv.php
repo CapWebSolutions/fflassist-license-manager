@@ -17,15 +17,15 @@ function capweb_start_it_up($input_file, $number_of_records ) {
     if ( empty ($number_of_records) ) {
         echo "Entire file will be processed.";
     } else {
-        echo "Only the first " . $number_of_records . " records will be processed.";
+        echo "Only the first " . wp_kses_post($number_of_records) . " records will be processed.";
     }
 
     // Check for row limiting import
     $row_limit = false;
     if ( !empty( $number_of_records ) ) $row_limit = intval( $number_of_records );
     
-    echo "Importing file " . $input_file . "...";
-    echo "Row limit is " . $row_limit . ".";
+    echo "Importing file " . wp_kses_post($input_file) . "...";
+    echo "Row limit is " . wp_kses_post($row_limit) . ".";
 
     // Check if the filename parameter is a full URL or just the name.ext
     $file_param = $input_file;
@@ -48,7 +48,7 @@ function capweb_start_it_up($input_file, $number_of_records ) {
         if (!empty($attachments)) {
             $file_path = get_attached_file($attachments[0]->ID);
         } else {
-            echo "The file " . $file_param . " was not found in the media library.";
+            echo "The file " . wp_kses_post($file_param) . " was not found in the media library.";
             $status = "error - file not found";
             return $status;
         }
@@ -78,7 +78,7 @@ function capweb_start_it_up($input_file, $number_of_records ) {
     // Open the CSV file
     $handle = fopen($file_path, 'r');
     if (!$handle) {
-        echo "Failed to open the file " . $file_path . ".";
+        echo "Failed to open the file " . wp_kses_post($file_path) . ".";
         $status = "error - file not opened";
         return $status;
     }
@@ -107,7 +107,7 @@ function capweb_start_it_up($input_file, $number_of_records ) {
 
         $row_count++;
         if ($row_count % 1000 == 0) {
-            echo "Processed " . $row_count . " records...";
+            echo "Processed " . wp_kses_post($row_count) . " records...";
         }
     }
 
@@ -117,8 +117,8 @@ function capweb_start_it_up($input_file, $number_of_records ) {
         $end_time = microtime(true); 
         $duration = $end_time - $start_time; 
         $short_dur = round( $duration, 2 );
-        echo "Import completed in " . $short_dur . " seconds."; 
+        echo "Import completed in " . wp_kses_post($short_dur) . " seconds."; 
     } 
 
-    echo "Finished processing " . $row_count . " records.";
+    echo "Finished processing " . wp_kses_post($row_count) . " records.";
 }

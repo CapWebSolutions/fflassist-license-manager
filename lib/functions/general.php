@@ -27,7 +27,8 @@ function capweb_start_it_up_callback() {
     } else {
         $output = $status;
     }
-    echo $output;
+    // echo $output;
+    echo wp_kses_post($output); // Accept any code that is allowed in a WordPress post.
     wp_die;
 }
 
@@ -66,7 +67,8 @@ function capweb_search_license_callback() {
         </div>
         <?php
     } else {
-        echo '<p>No license found with the provided number. ' . $license_number . '</p>' ;
+        // echo '<p>No license found with the provided number. ' . $license_number . '</p>' ;
+        echo esc_html('No license found with the provided number:  ') . wp_kses_post($license_number);
     }
 
     wp_die();
@@ -74,11 +76,29 @@ function capweb_search_license_callback() {
 add_action('wp_ajax_capweb_search_license', 'capweb_search_license_callback');
 
 
+function capweb_import_licenses_callback() { 
+    global $wpdb;
 
-// add_action( 'rwmb_enqueue_scripts','capweb_enqueue_custom_script' );
-function capweb_enqueue_custom_script() {
-    wp_enqueue_script( 'script-id', dirname( __FILE__) . '/assets/js/admin.js', [ 'jquery' ], '', true );
-    // wp_localize_script( 'script-id', 'ffl_import_data', [
-    //     'ajax_url' => admin_url( 'admin-ajax.php' ),
-    // ]);
+    $license_import_file = isset($_POST['license_import_file']) ? sanitize_text_field($_POST['license_import_file']) : '';
+    $license_record_limit = isset($_POST['record_limit']) ? sanitize_text_field($_POST['record_limit']) : '';
+
+
+    if (empty($license_import_file)) {
+        echo 'Please select a license import file from the media library.' . __FILE__;
+        wp_die();
+    }
+    // Do it.  
+    $result = capweb_perform_license_file_import( $license_import_file, $record_limit );
+    if ($result) {
+        ?>
+        <div class='license-import-wrap'>
+        <h3>License Import Activity</h3>
+
+        </div>
+        <?php
+    } else {
+        echo esc_html('File import was not sucecssful. ') . wp_kses_post($result);
+    }
+
 }
+add_action('wp_ajax_capweb_import_licenses', 'capweb_import_licenses_callback');

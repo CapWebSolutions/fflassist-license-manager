@@ -6,6 +6,8 @@
  * Version: 1.1.3
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
@@ -40,7 +42,7 @@ function capweb_license_manager_core_setup() {
  * Styles required for display of the License Manager Search page.
  */
 function capweb_enqueue_search_script() {
-    wp_enqueue_script('search-script', plugin_dir_url(__FILE__) . 'assets/js/search.js', ['jquery'], '', true);
+    wp_enqueue_script('search-script', plugin_dir_url(__FILE__) . 'assets/js/search.js', ['jquery'], LICENSE_MANAGER_PLUGIN_VERSION, true);
     wp_localize_script('search-script', 'search_data', [
         'ajax_url' => admin_url('admin-ajax.php'),
     ]);

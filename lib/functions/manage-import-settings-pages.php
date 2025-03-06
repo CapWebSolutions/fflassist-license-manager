@@ -21,7 +21,7 @@
  */
 function capweb_create_license_settings_page( $settings_pages ) {
 	$settings_pages[] = [
-        'menu_title'      => __( 'FFL License Management', 'fflassist' ),
+        'menu_title'      => __( 'FFL License Management', 'fflassist-license-manager' ),
         'id'              => 'ffl-license-management',
         'position'        => 3,
         'parent'          => 'tools.php',
