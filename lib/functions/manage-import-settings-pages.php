@@ -29,7 +29,7 @@ function capweb_create_license_settings_page( $settings_pages ) {
         'tabs'            => [
             'Import' => 'Import',
             'Search' => 'Search',
-            'Modify' => 'Modify',
+            // 'Modify' => 'Modify',
         ],
         'customizer'      => false,
         'customizer_only' => false,

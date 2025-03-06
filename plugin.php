@@ -19,15 +19,16 @@
  *
  */
 
-// Define needed constants
-// define( 'LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
-// define( 'LICENSE_MANAGER_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
+// Enque scripts & styles if on our License Manamgent page
+add_action( 'admin_enqueue_scripts', function() {
+	if ( is_admin() && isset($_GET['page']) && $_GET['page'] === 'ffl-license-management' ) {
+		capweb_enqueue_search_script();
+		capweb_enqueue_import_script();
+		wp_enqueue_style( 'style-id', plugin_dir_url(__FILE__) . 'assets/css/license-manager-admin.css' );
+	}
+});
 
 add_action( 'after_setup_theme','capweb_license_manager_core_setup' );
-add_action( 'admin_enqueue_scripts', 'capweb_enqueue_search_script');
-add_action( 'rwmb_enqueue_scripts', function () {
-    wp_enqueue_style( 'style-id', plugin_dir_url(__FILE__) . 'assets/css/license-manager-admin.css' );
-} );
 
 function capweb_license_manager_core_setup() {
 	if( ! function_exists('get_plugin_data') ){
@@ -39,7 +40,7 @@ function capweb_license_manager_core_setup() {
 }
 
 /**
- * Styles required for display of the License Manager Search page.
+ * Styles / scripts required for display of the License Manager Search page.
  */
 function capweb_enqueue_search_script() {
     wp_enqueue_script('search-script', plugin_dir_url(__FILE__) . 'assets/js/search.js', ['jquery'], LICENSE_MANAGER_PLUGIN_VERSION, true);
@@ -48,6 +49,23 @@ function capweb_enqueue_search_script() {
     ]);
 }
 
+/**
+ * Scripts required for display of the License Manager Import page.
+ */
+function capweb_enqueue_import_script() {
+	wp_enqueue_script(
+		'import-script', 
+		plugin_dir_url(__FILE__) . 'assets/js/import.js', 
+		['jquery'], 
+		LICENSE_MANAGER_PLUGIN_VERSION, 
+		true
+	);
+    wp_localize_script(
+		'import-script', 
+		'import_data', 
+		['ajax_url' => admin_url('admin-ajax.php'),]
+	);
+}
 
 
 /**

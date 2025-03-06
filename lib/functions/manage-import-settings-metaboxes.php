@@ -31,27 +31,23 @@ function capweb_display_license_settings_import_mb( $meta_boxes ) {
                 'name'              => __( 'License Import File', 'fflassist-license-manager' ),
                 'id'                => $prefix . 'license_import_file',
                 'type'              => 'file_advanced',
-                'label_description' => __( 'Select file from media library. ', 'fflassist-license-manager' ),
-                'desc'              => __( 'CSV file expected. Importing is a destructive process. Existing FFL Licensee records are deleted.', 'fflassist-license-manager' ),
                 'max_file_uploads'  => 1,
-                'force_delete'      => true,
-                'required'          => true,
-                'clone'             => false,
-                'clone_empty_start' => false,
+                'force_delete'      => false,
+                'mime_type'         => 'application/csv, text/csv',
+                'label_description' => __( '', 'fflassist-license-manager' ),
+                'desc'              => __( 'Copy/paste URL of file from media library. CSV file expected. Importing is a destructive process. Existing FFL Licensee records are deleted.', 'fflassist-license-manager' ),
                 'hide_from_rest'    => false,
                 'hide_from_front'   => false,
-                'mime_type'         => 'text/csv',
+                'class' => 'license_import_file',
+                'required' => true,
             ],
             [
                 'name'              => __( 'Record Limit', 'fflassist-license-manager' ),
                 'id'                => $prefix . 'record_limit',
                 'type'              => 'number',
-                'desc'              => __( 'Maximum number of records to import. All records will be processed if left blank. ', 'fflassist-license-manager' ),
+                'desc'              => __( 'Maximum number of records to import. All records in file will be processed if left blank. ', 'fflassist-license-manager' ),
+                'size'              => 20,
                 'required'          => false,
-                'min'               => 0,
-                'default_value'     => 0,
-                'size'          => 20,
-                'placeholder'       => '0', 
                 'disabled'          => false,
                 'readonly'          => false,
                 'clone'             => false,
@@ -60,15 +56,14 @@ function capweb_display_license_settings_import_mb( $meta_boxes ) {
                 'hide_from_front'   => false,
             ],
             [
-                'name'            => __( 'Execute License Import', 'fflassist-license-manager' ),
+                // 'name'            => __( 'Execute License Import', 'fflassist-license-manager' ),
                 'id'              => $prefix . 'import_button',
                 'type'            => 'button',
                 'std'             => __( 'RUN IMPORT', 'fflassist-license-manager' ),
                 'attributes' => [
-                    'data-section' => 'advanced-section',
+                    'data-section' => 'advanced-import-section',
                     'class'        => 'js-import-license',
                 ],
-                'disabled'        => false,
                 'hide_from_rest'  => false,
                 'hide_from_front' => false,
             ],
@@ -113,7 +108,7 @@ function capweb_display_license_settings_modify_mb( $meta_boxes ) {
 
     return $meta_boxes;
 }
-add_filter( 'rwmb_meta_boxes','capweb_display_license_settings_modify_mb' );
+// add_filter( 'rwmb_meta_boxes','capweb_display_license_settings_modify_mb' );
 
 /**
  * Display License Search Settings Meta Boxes
@@ -135,7 +130,7 @@ function capweb_display_license_settings_search_mb($meta_boxes) {
                 'id'              => $prefix . 'license_number',
                 'type'            => 'text',
                 'desc' => __( 'Enter license code to search. Dashes not required.', 'fflassist-license-manager' ),
-                'required'        => true,
+                // 'required'        => true,
                 'placeholder'     => FFL_LICENSE_PLACEHOLDER,
                 'hide_from_rest'  => false,
                 'hide_from_front' => false,

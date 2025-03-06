@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
         var licenseNumber = $('input[name="license_number"]').val();
 
         if (!licenseNumber) {
-            alert('Please enter a license number.');
+            alert('Please enter an FFL License Number.');
             return;
         }
 
