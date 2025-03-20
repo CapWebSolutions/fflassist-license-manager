@@ -131,5 +131,5 @@ var_dump($_POST);
 }
 
 // Hook the function to handle the AJAX request
-add_action('wp_ajax_capweb_import_licenses', 'capweb_import_licenses');
-add_action('wp_ajax_nopriv_capweb_import_licenses', 'capweb_import_licenses');
+add_action('wp_ajax_capweb_import_licenses', 'capweb_import_licenses_callback');
+add_action('wp_ajax_nopriv_capweb_import_licenses', 'capweb_import_licenses_callback');
