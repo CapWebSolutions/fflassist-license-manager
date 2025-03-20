@@ -8,18 +8,16 @@
  * : The name of the csv FFL Licenses file to be imported. Use URL from media library.  
  * 
  * [--log]
- * : Displays the duration time of the import. 
+ * : Displays the duration time of the import. Defaults to false.
  * 
  * [--limit=<number>]
- * : Limits to number of records to import. Defautls to entire file.
+ * : Limits to number of records to import. Defaults to entire file.
  * 
  * ## EXAMPLES
  * 
  *    wp import_ffl_data --file=0924-ffl-list-complete.csv --log --limit=5000 
  *         // Reads the file from the current disk location and processes the first 5000 records.
  * 
- *    wp import_ffl_data --media=0924-ffl-list-10000-records.csv --log --limit=2500
- *         // Reads the file from the media library and processes the first 2500 records.
  *
  * @when after_wp_load
  */
@@ -27,6 +25,7 @@
 class Import_Ffl_Data
 {
 
+    // __invoke registers the command to this single method. No others permitted.
     public function __invoke($args, $assoc_args)
     {
            global $wpdb;
@@ -42,12 +41,13 @@ class Import_Ffl_Data
         // Grab file parameter from either --file or --media. --media takes presedence if both present.
         $file_param = $assoc_args['media'] ?? $assoc_args['file'];
 
-        WP_CLI::debug('file parameter used ' . $file_param);
         // Check for row limiting import
         $row_limit = false;
         if (!empty($assoc_args['limit']) ) { $row_limit = intval($assoc_args['limit']);
         }
-        WP_CLI::debug('row limit ' . $row_limit);
+
+        // Check for logging time
+        $log_time = !empty($assoc_args['log']); 
 
         // Check if the filename parameter is a full URL or just the name.ext
         if (filter_var($file_param, FILTER_VALIDATE_URL) ) {
@@ -111,7 +111,7 @@ class Import_Ffl_Data
         dbDelta($sql);
 
         // Log start time if --log is provided 
-        $log_time = !empty($assoc_args['log']); 
+
         if ($log_time ) { 
             $start_time = microtime(true); 
         }
@@ -186,7 +186,8 @@ class Import_Ffl_Data
             WP_CLI::log("Import completed in {$short_dur} seconds."); 
         } 
 
-        WP_CLI::success("Finished processing {$row_count} records.");
+        $row_count--;   // Update for 1st record skip
+        WP_CLI::success("Completed processing {$row_count} records.");
     }
 
 }
