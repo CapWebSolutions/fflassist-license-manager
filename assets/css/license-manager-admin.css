@@ -2,7 +2,8 @@
         *** CSS needed for license manager plugin
 */
 
-.license-wrap-notice {
+.license-wrap-notice,
+.import-license-wrap-notice {
     margin-left: 1em;;
 }
 

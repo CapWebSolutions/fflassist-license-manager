@@ -3,7 +3,7 @@
  * Plugin Name: FFLAssist License Manager
  * Plugin URI: https://github.com/CapWebSolutions/fflassist-license-manager
  * Description: This contains FFL License Manager functionality for FFLAssist. It should remain activated.
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  * License:           GPL v2 or later
@@ -44,9 +44,13 @@ function capweb_license_manager_core_setup() {
  */
 function capweb_enqueue_search_script() {
     wp_enqueue_script('search-script', plugin_dir_url(__FILE__) . 'assets/js/search.js', ['jquery'], LICENSE_MANAGER_PLUGIN_VERSION, true);
-    wp_localize_script('search-script', 'search_data', [
+    wp_localize_script(
+		'search-script', 
+		'search_data', 
+		[
         'ajax_url' => admin_url('admin-ajax.php'),
-    ]);
+		]
+	);
 }
 
 /**
@@ -63,10 +67,12 @@ function capweb_enqueue_import_script() {
     wp_localize_script(
 		'import-script', 
 		'import_data', 
-		['ajax_url' => admin_url('admin-ajax.php'),]
+		[
+		'ajax_url' => admin_url('admin-ajax.php'),
+		'nonce' => wp_create_nonce('capweb_import_nonce'), // Generate the nonce
+		]
 	);
 }
-
 
 /**
  * Get all the include files for the theme.

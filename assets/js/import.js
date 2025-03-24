@@ -2,47 +2,46 @@ jQuery(document).ready(function($) {
 
     function handleImportClick(event) {
         event.preventDefault();
+
         var licenseImportFile = $('a.rwmb-file-title').attr('href');
-        var recordLimit = $('#record_limit').val();
-        var recordLimit = recordLimit ? recordLimit : 0;
+        var recordLimit = $('#record_limit').val() ? $('#record_limit').val() : 0;
+        var logTime = $('#log_time').is(':checked') ? 1 : 0;
+
         console.log('License import file: ' + licenseImportFile);
         console.log('Record Limit: ' + recordLimit);
+        console.log('Log Time: ' + logTime);
 
         if (!licenseImportFile) {
-            alert('Please select a license import file from the media library. If you do not have a file to import, please upload one.');
+            alert('Please select a license import file from the media library. If you do not have a file to import in the media library, please upload one.');
             return;
         }
 
-        $('#import-results').html('<div class="license-wrap-notice"><p>Working . . .</p></div>');
+        if (!recordLimit) {
+            alert('Importing entire file. This may take a while.');
+        }
+
+        $('#import-results').html('<div class="import-license-wrap-notice"><p>Working . . .</p></div>');
 
         $.ajax({
             url: import_data.ajax_url,
-            type: 'POST',
+            type: 'post',
             data: {
-                action: 'capweb_import_licenses_callback',
+                action: 'capweb_import_license_callback',
+                nonce: import_data.nonce,
                 license_import_file: licenseImportFile,
                 record_limit: recordLimit,
+                log_time: logTime,
             },
+
             success: function(response) {
                 console.log('AJAX Success:', response);
-                handleAjaxSuccess(response);
+                $('#import-results').html('<strong>Success!</strong> ' + response + ' licenses imported.' + ' From ' + licenseImportFile + ' Record Limit = ' + recordLimit + '.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown, jqXHR.responseText);
-                handleAjaxError(jqXHR, textStatus, errorThrown, licenseImportFile);
+                $('#import-results').html('<p>A(n) ' + textStatus + '--- ' + errorThrown + ' ---- occurred while processing ' + licenseImportFile + '.<br>Please try again.</p>');
             }
         });
-
-    }
-
-    function handleAjaxSuccess(response) {
-        // $('#import-results').html(response);
-        $('#import-results').html('<h2>Success!</h2><br>' + response );
-        console.log('Success!');
-    }
-
-    function handleAjaxError(jqXHR, textStatus, errorThrown, licenseImportFile) {
-        $('#import-results').html('<p>A(n) ' + textStatus + '--- ' + errorThrown + ' ---- occurred while processing ' + licenseImportFile + '.<br>Please try again.</p>');
     }
 
     // Ensure the document is ready before attaching the event handler

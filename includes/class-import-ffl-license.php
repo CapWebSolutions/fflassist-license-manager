@@ -111,7 +111,6 @@ class Import_Ffl_Data
         dbDelta($sql);
 
         // Log start time if --log is provided 
-
         if ($log_time ) { 
             $start_time = microtime(true); 
         }
