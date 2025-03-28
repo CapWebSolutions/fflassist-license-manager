@@ -24,6 +24,7 @@ add_action( 'admin_enqueue_scripts', function() {
 	if ( is_admin() && isset($_GET['page']) && $_GET['page'] === 'ffl-license-management' ) {
 		capweb_enqueue_search_script();
 		capweb_enqueue_import_script();
+		capweb_enqueue_modify_script();
 		wp_enqueue_style( 'style-id', plugin_dir_url(__FILE__) . 'assets/css/license-manager-admin.css' );
 	}
 });
@@ -70,6 +71,24 @@ function capweb_enqueue_import_script() {
 		[
 		'ajax_url' => admin_url('admin-ajax.php'),
 		'nonce' => wp_create_nonce('capweb_import_nonce'), // Generate the nonce
+		]
+	);
+}
+
+function capweb_enqueue_modify_script() {
+	wp_enqueue_script(
+		'modify-script', 
+		plugin_dir_url(__FILE__) . 'assets/js/modify.js', 
+		['jquery'], 
+		LICENSE_MANAGER_PLUGIN_VERSION, 
+		true
+	);
+    wp_localize_script(
+		'modify-script', 
+		'modify_data', 
+		[
+		'ajax_url' => admin_url('admin-ajax.php'),
+		'nonce' => wp_create_nonce('capweb_modify_nonce'), // Generate the nonce
 		]
 	);
 }
