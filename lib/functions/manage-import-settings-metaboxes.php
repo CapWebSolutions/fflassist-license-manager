@@ -26,7 +26,7 @@ function capweb_create_license_settings_page( $settings_pages ) {
         'parent'          => 'tools.php',
         'columns'         => 1,
         'tabs'            => [
-            // 'Import' => 'Import',
+            'Import' => 'Import',
             'Search' => 'Search',
             // 'Modify' => 'Modify',
         ],
