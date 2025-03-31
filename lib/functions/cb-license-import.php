@@ -22,25 +22,14 @@ function capweb_import_license_callback() {
     $record_limit = isset($_POST['record_limit']) ? sanitize_text_field($_POST['record_limit']) : '0';
     $log_time = isset($_POST['log_time']) ? sanitize_text_field($_POST['log_time']) : '0';
 
-    // var_dump($files);
-    // var_dump($file);
-    // var_dump($file['url']);
 
     foreach ($file as $key => $value) {
-        // echo "Key: $key; Value: $value<br />\n";
         if ( 'url' == $key ) {
             // $my_license_import_file = $value;
-            // var_dump($value);
             $result = capweb_perform_license_file_import( $value, $record_limit, $log_time );
             exit;
         }
     }
-
-    // $my_license_import_file = $license_import_file2;
-
-    // var_dump($license_import_file2);
-    // var_dump($my_license_import_file);
-
  
     if ( '' == $my_license_import_file )  {
         echo "<div class='import-license-wrap'>Please select a license file.</div>";
@@ -49,9 +38,7 @@ function capweb_import_license_callback() {
     if ( 0 == $record_limit) {
         echo 'Processing Entire Import File.' . __FILE__;
     }
-    if ( 0 == $log_time) {
-        echo 'Not Logging Time.' . __FILE__;
-    }   
+ 
     ?>
     <div class='import-license-wrap'>
     <h3>Import Details</h3>

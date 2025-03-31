@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
 
             success: function(response) {
                 console.log('AJAX Success:', response);
-                $('#import-results').html('<strong>Success!</strong> ' + response + ' licenses imported.' + ' From ' + licenseImportFile + ' Record Limit = ' + recordLimit + '.');
+                $('#import-results').html('<strong>Success!</strong> ' + response + ' Licenses imported from ' + licenseImportFile + '.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown, jqXHR.responseText);

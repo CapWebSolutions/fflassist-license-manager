@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2025-03-31
+
+### Added
+
+- Add placeholder files for license modify logic. 
+
+### Changed
+
+- Re-enable import via settings page for launch.
+- Add `global $wpdb;` statement to refactored import code. 
+
 ## [1.1.4] - 2025-03-24
 
 ### Changed

@@ -5,18 +5,14 @@ function capweb_perform_license_file_import( $import_file, $record_limit, $log_t
     // Get file to import.
     $file_path = capweb_get_filename( $import_file );
 
-    var_dump($file_path);
-
     // Initialize the import process.
     $ffl_table = capweb_initialize_ffl_license_db_table();
-    var_dump($ffl_table);
 
     // Setup file and read it into memory.
     $stream = capweb_setup_import_file( $file_path );
 
     // Process the imported file stream and return the number of records processed.
     $result = capweb_process_imported_file_stream( $stream, $ffl_table, $record_limit );
-    var_dump($result);
 
     return $result;
 }
@@ -24,44 +20,6 @@ function capweb_perform_license_file_import( $import_file, $record_limit, $log_t
 
 function capweb_get_filename( $file_param )
 {
-
-    // Check if the filename parameter is a full URL or just the name.ext
-    // if (filter_var($file_param, FILTER_VALIDATE_URL) ) {
-    //     // The $file_param name is valid formatted URL, ie not a HDD address 
-
-    //     $file_path = get_attached_file(attachment_url_to_postid($file_param));
-    //     error_log( '1 - $file_path ' . var_export( $file_path, true ) );
-    
-    // } elseif (file_exists($file_param) ) {
-    //     // The $file_param is a valid file path on the local file system.
-    //     $file_path = $file_param;
-    //     error_log( '2 - $file_path ' . var_export(  $file_path, true ) );
-    
-    // } else {
-        // Here it is a URL, decode the components and retrieve the file path. 
-        // $attachments = get_posts(
-        //     array(
-        //     'post_type'   => 'attachment',
-        //     'post_status' => 'inherit',
-        //     'meta_query'  => array(
-        //         array(
-        //             'key'     => '_wp_attached_file',
-        //             'value'   => $file_param,
-        //             'compare' => 'LIKE',
-        //         )
-        //     )
-        //     )
-        // );
-
-        // if (!empty($attachments)) {
-        //     $file_path = get_attached_file($attachments[0]->ID);
-        //     error_log( 'Full file path on server for media file provided: '  . var_export( $file_path, true ) );
-
-        // } else {
-        //     error_log( '$file_param} was not found in the media library or on the server. ' . var_export( $file_param, true ) );
-        //     exit;
-        // }
-    // }
     global $wp_filesystem;
 
     // Ensure the $wp_filesystem global is initialized
@@ -79,14 +37,6 @@ function capweb_get_filename( $file_param )
         $upload_dir['basedir'], // The base directory of the upload directory
         $file_param
     );
-    
-    // Check if the file exists
-    // if ( $wp_filesystem->exists($file_path) ) {
-    //     // Read the file's contents
-    //     $file_contents = $wp_filesystem->get_contents($file_path);
-    // } else {
-    //     echo 'File does not exist.';
-    // }
 
     return $file_path;
 }
@@ -122,7 +72,7 @@ function capweb_initialize_ffl_license_db_table() {
  
 function capweb_setup_import_file( $file_path )
 {
-
+    global $wpdb;
     // Open the file handling library
     global $wp_filesystem;
     if (empty($wp_filesystem)) {
@@ -154,7 +104,7 @@ function capweb_setup_import_file( $file_path )
 
 function capweb_process_imported_file_stream( $stream, $table_name, $row_limit )
 {
-    
+    global $wpdb;
     $row_count = 0;
     // Process the entire file contents which now resides in memory -> $stream
     // Skip the 1st record. 
