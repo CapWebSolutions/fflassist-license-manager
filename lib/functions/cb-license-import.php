@@ -17,17 +17,15 @@ function capweb_import_license_callback() {
     $files = rwmb_meta( 'license_import_file', [ 'object_type' => 'setting', 'limit' => 1 ], 'ffl-license-management' );
     $file = reset( $files );
   
-    // $license_import_file_tmp = $file('url');
-
     $record_limit = isset($_POST['record_limit']) ? sanitize_text_field($_POST['record_limit']) : '0';
     $log_time = isset($_POST['log_time']) ? sanitize_text_field($_POST['log_time']) : '0';
 
 
     foreach ($file as $key => $value) {
         if ( 'url' == $key ) {
-            // $my_license_import_file = $value;
+            $my_license_import_file = $value;
             $result = capweb_perform_license_file_import( $value, $record_limit, $log_time );
-            exit;
+            wp_die();
         }
     }
  
